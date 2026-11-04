@@ -25,7 +25,60 @@ st.set_page_config(
     page_icon="📊",
     layout="wide"
 )
+st.markdown("""
+<style>
 
+/* Main application background */
+.stApp {
+    background-color: #F5F7F6;
+}
+
+/* Main headings */
+h1 {
+    color: #009E4D;
+    font-weight: 700;
+}
+
+h2, h3 {
+    color: #1F2729;
+}
+
+/* Metric cards */
+[data-testid="stMetric"] {
+    background-color: #FFFFFF;
+    border-left: 5px solid #3DCD58;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+/* Sidebar accent */
+[data-testid="stSidebar"] {
+    border-right: 3px solid #3DCD58;
+}
+
+/* Primary buttons */
+.stButton > button {
+    background-color: #3DCD58;
+    color: #1F2729;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+/* Primary buttons hover */
+.stButton > button:hover {
+    background-color: #009E4D;
+    color: #FFFFFF;
+}
+
+/* Horizontal separators */
+hr {
+    border-color: #DDE3DF;
+}
+
+</style>
+""", unsafe_allow_html=True)
 
 # ---------------------------------------------------------
 # Application Header
@@ -345,7 +398,7 @@ else:
             cm,
             annot=True,
             fmt="d",
-            cmap="Blues",
+            cmap="Greens",
             xticklabels=["No", "Yes"],
             yticklabels=["No", "Yes"],
             ax=ax
@@ -366,7 +419,8 @@ else:
         # -------------------------------------------------
 
         st.subheader("Classification Report")
-    report = classification_report(
+
+        report = classification_report(
             y_test,
             y_pred,
             target_names=["No", "Yes"],
@@ -374,9 +428,7 @@ else:
             zero_division=0
         )
 
-        report_df = pd.DataFrame(
-            report
-        ).transpose()
+        report_df = pd.DataFrame(report).transpose()
 
         st.dataframe(
             report_df.round(4),
