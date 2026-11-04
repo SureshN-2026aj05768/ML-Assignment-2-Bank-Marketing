@@ -124,7 +124,6 @@ expected_features = [
     "poutcome"
 ]
 
-
 # ---------------------------------------------------------
 # Sidebar
 # ---------------------------------------------------------
@@ -141,12 +140,70 @@ uploaded_file = st.sidebar.file_uploader(
     type=["csv"]
 )
 
+st.sidebar.markdown("---")
+
+# ---------------------------------------------------------
+# Sample Test Data Download
+# ---------------------------------------------------------
+
+st.sidebar.subheader("Sample Test Data")
+
+try:
+    with open("test_data.csv", "rb") as file:
+        st.sidebar.download_button(
+            label="Download Test Data",
+            data=file,
+            file_name="test_data.csv",
+            mime="text/csv",
+            use_container_width=True
+        )
+
+except FileNotFoundError:
+    st.sidebar.warning(
+        "Sample test data is currently unavailable."
+    )
+
 st.sidebar.info(
-    "Upload test data containing the original 16 features "
-    "and the target column 'y'."
+    "Upload a CSV containing the 16 input features "
+    "and the target column 'y' for model evaluation."
 )
 
+# ---------------------------------------------------------
+# Expected Data Format
+# ---------------------------------------------------------
 
+with st.sidebar.expander("Expected CSV Format & Columns"):
+
+    st.markdown("""
+The uploaded CSV must contain **16 input features**
+and the target column **y**.
+
+**Numerical features**
+- age
+- balance
+- day
+- duration
+- campaign
+- pdays
+- previous
+
+**Categorical features**
+- job
+- marital
+- education
+- default
+- housing
+- loan
+- contact
+- month
+- poutcome
+
+**Target values**
+- `yes`
+- `no`
+
+You can download the sample test dataset above and use it as a reference for the expected CSV structure.
+""")
 # ---------------------------------------------------------
 # Main Application
 # ---------------------------------------------------------
