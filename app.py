@@ -616,56 +616,56 @@ else:
 
         with visual_col1:
 
-        st.markdown("#### Confusion Matrix")
-
-        cm = confusion_matrix(
-            y_test,
-            y_pred
-        )
-
-        # Calculate row-wise percentages
-        cm_percent = (
-        cm.astype("float")
-            / cm.sum(axis=1)[:, None]
-            * 100
-        )
-
-        # Create labels containing count + percentage
-        cm_labels = []
-
-        for i in range(cm.shape[0]):
-            row_labels = []
+            st.markdown("#### Confusion Matrix")
     
-            for j in range(cm.shape[1]):
-                row_labels.append(
-                    f"{cm[i, j]:,}\n{cm_percent[i, j]:.1f}%"
-                )
+            cm = confusion_matrix(
+                y_test,
+                y_pred
+            )
     
-            cm_labels.append(row_labels)
+            # Calculate row-wise percentages
+            cm_percent = (
+            cm.astype("float")
+                / cm.sum(axis=1)[:, None]
+                * 100
+            )
     
-        fig, ax = plt.subplots(figsize=(5, 4))
+            # Create labels containing count + percentage
+            cm_labels = []
     
-        sns.heatmap(
-            cm,
-            annot=cm_labels,
-            fmt="",
-            cmap="Greens",
-            xticklabels=["No", "Yes"],
-            yticklabels=["No", "Yes"],
-            cbar=True,
-            ax=ax
-        )
-    
-        ax.set_xlabel("Predicted")
-        ax.set_ylabel("Actual")
-        ax.set_title(selected_model_name)
-    
-        st.pyplot(fig)
-    
-        st.caption(
-            "Each cell shows the number of records and the "
-            "percentage within the corresponding actual class."
-        )
+            for i in range(cm.shape[0]):
+                row_labels = []
+        
+                for j in range(cm.shape[1]):
+                    row_labels.append(
+                        f"{cm[i, j]:,}\n{cm_percent[i, j]:.1f}%"
+                    )
+        
+                cm_labels.append(row_labels)
+        
+            fig, ax = plt.subplots(figsize=(5, 4))
+        
+            sns.heatmap(
+                cm,
+                annot=cm_labels,
+                fmt="",
+                cmap="Greens",
+                xticklabels=["No", "Yes"],
+                yticklabels=["No", "Yes"],
+                cbar=True,
+                ax=ax
+            )
+        
+            ax.set_xlabel("Predicted")
+            ax.set_ylabel("Actual")
+            ax.set_title(selected_model_name)
+        
+            st.pyplot(fig)
+        
+            st.caption(
+                "Each cell shows the number of records and the "
+                "percentage within the corresponding actual class."
+            )
 
 
         # -------------------------------------------------
