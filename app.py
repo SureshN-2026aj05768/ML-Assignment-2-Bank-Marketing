@@ -25,60 +25,183 @@ st.set_page_config(
     page_icon="📊",
     layout="wide"
 )
+# ---------------------------------------------------------
+# Application Theme
+# ---------------------------------------------------------
+
 st.markdown("""
 <style>
 
-/* Main application background */
+/* -------------------------------------------------------
+   Main Application
+------------------------------------------------------- */
+
 .stApp {
-    background-color: #F5F7F6;
+    background-color: #F7F8F7;
+    color: #0A2F24;
 }
 
-/* Main headings */
+
+/* -------------------------------------------------------
+   Typography
+------------------------------------------------------- */
+
 h1 {
-    color: #009E4D;
+    color: #0A2F24;
     font-weight: 700;
 }
 
-h2, h3 {
-    color: #1F2729;
+h2 {
+    color: #0A2F24;
+    font-weight: 650;
 }
 
-/* Metric cards */
-[data-testid="stMetric"] {
-    background-color: #FFFFFF;
-    border-left: 5px solid #3DCD58;
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+h3 {
+    color: #0A2F24;
 }
 
-/* Sidebar accent */
+
+/* -------------------------------------------------------
+   Sidebar
+------------------------------------------------------- */
+
 [data-testid="stSidebar"] {
+    background-color: #E7FFD9;
     border-right: 3px solid #3DCD58;
 }
 
-/* Primary buttons */
-.stButton > button {
+[data-testid="stSidebar"] h1,
+[data-testid="stSidebar"] h2,
+[data-testid="stSidebar"] h3 {
+    color: #0A2F24;
+}
+
+
+/* -------------------------------------------------------
+   Metric Cards
+------------------------------------------------------- */
+
+[data-testid="stMetric"] {
+    background-color: #FFFFFF;
+    border: 1px solid #DDE5DF;
+    border-left: 6px solid #3DCD58;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0px 2px 7px rgba(10, 47, 36, 0.08);
+}
+
+[data-testid="stMetricLabel"] {
+    color: #0A2F24;
+}
+
+[data-testid="stMetricValue"] {
+    color: #0A2F24;
+    font-weight: 700;
+}
+
+
+/* -------------------------------------------------------
+   Download and Action Buttons
+------------------------------------------------------- */
+
+.stButton > button,
+.stDownloadButton > button {
+
     background-color: #3DCD58;
-    color: #1F2729;
-    border: none;
-    border-radius: 6px;
-    font-weight: 600;
+    color: #0A2F24;
+
+    border: 1px solid #3DCD58;
+    border-radius: 7px;
+
+    font-weight: 650;
+
+    transition: 0.2s;
 }
 
-/* Primary buttons hover */
-.stButton > button:hover {
-    background-color: #009E4D;
-    color: #FFFFFF;
+.stButton > button:hover,
+.stDownloadButton > button:hover {
+
+    background-color: #0A2F24;
+    color: #E7FFD9;
+
+    border-color: #0A2F24;
 }
 
-/* Horizontal separators */
+
+/* -------------------------------------------------------
+   File Uploader
+------------------------------------------------------- */
+
+[data-testid="stFileUploader"] {
+
+    background-color: #FFFFFF;
+
+    border-radius: 8px;
+
+    padding: 5px;
+}
+
+
+/* -------------------------------------------------------
+   Expander
+------------------------------------------------------- */
+
+[data-testid="stExpander"] {
+
+    background-color: #FFFFFF;
+
+    border: 1px solid #DDE5DF;
+
+    border-radius: 8px;
+}
+
+
+/* -------------------------------------------------------
+   Information Messages
+------------------------------------------------------- */
+
+[data-testid="stAlert"] {
+
+    border-radius: 8px;
+}
+
+
+/* -------------------------------------------------------
+   Dataframes
+------------------------------------------------------- */
+
+[data-testid="stDataFrame"] {
+
+    border: 1px solid #DDE5DF;
+
+    border-radius: 8px;
+}
+
+
+/* -------------------------------------------------------
+   Divider
+------------------------------------------------------- */
+
 hr {
-    border-color: #DDE3DF;
+
+    border: none;
+
+    border-top: 1px solid #DDE5DF;
+
+}
+
+
+/* -------------------------------------------------------
+   Caption
+------------------------------------------------------- */
+
+.stCaption {
+
+    color: #49645B;
 }
 
 </style>
-""", unsafe_allow_html=True)
+""", unsafe_allow_html=True)    
 
 # ---------------------------------------------------------
 # Application Header
@@ -86,10 +209,33 @@ hr {
 
 st.title("Bank Term Deposit Subscription Prediction")
 
-st.write(
-    "Evaluate and compare trained machine learning classification "
-    "models using Bank Marketing test data."
+st.caption(
+    "Machine Learning Model Evaluation Dashboard"
 )
+
+st.write(
+    "Compare five trained classification models using "
+    "the UCI Bank Marketing test dataset."
+)
+
+overview_col1, overview_col2, overview_col3 = st.columns(3)
+
+overview_col1.metric(
+    "Classification Models",
+    "5"
+)
+
+overview_col2.metric(
+    "Input Features",
+    "16"
+)
+
+overview_col3.metric(
+    "Problem Type",
+    "Binary"
+)
+
+st.divider()
 
 
 # ---------------------------------------------------------
@@ -102,6 +248,22 @@ model_files = {
     "K-Nearest Neighbors": "model/knn.joblib",
     "Gaussian Naive Bayes": "model/naive_bayes.joblib",
     "Support Vector Machine": "model/svm.joblib"
+}
+model_descriptions = {
+    "Logistic Regression":
+        "A linear probabilistic classification model used as a strong baseline.",
+
+    "Decision Tree":
+        "A tree-based classifier capable of learning non-linear relationships in the data.",
+
+    "K-Nearest Neighbors":
+        "An instance-based classifier that predicts classes using nearby observations.",
+
+    "Gaussian Naive Bayes":
+        "A probabilistic classifier based on Bayes' theorem and feature independence assumptions.",
+
+    "Support Vector Machine":
+        "A margin-based classifier that identifies an effective decision boundary between classes."
 }
 
 
@@ -392,6 +554,9 @@ else:
 
         st.success(selected_model_name)
 
+        st.caption(
+            model_descriptions[selected_model_name]
+        )
 
         # -------------------------------------------------
         # Metric Cards
@@ -435,63 +600,72 @@ else:
 
 
         # -------------------------------------------------
-        # Confusion Matrix
+        # Detailed Model Evaluation
         # -------------------------------------------------
 
         st.divider()
 
-        st.subheader("Confusion Matrix")
+        st.subheader("Detailed Model Evaluation")
 
-        cm = confusion_matrix(
-            y_test,
-            y_pred
-        )
+        visual_col1, visual_col2 = st.columns([1, 1.4])
 
-        fig, ax = plt.subplots(
-            figsize=(5, 4)
-        )
 
-        sns.heatmap(
-            cm,
-            annot=True,
-            fmt="d",
-            cmap="Greens",
-            xticklabels=["No", "Yes"],
-            yticklabels=["No", "Yes"],
-            ax=ax
-        )
+        # -------------------------------------------------
+        # Confusion Matrix
+        # -------------------------------------------------
 
-        ax.set_xlabel("Predicted")
-        ax.set_ylabel("Actual")
+        with visual_col1:
 
-        ax.set_title(
-            f"{selected_model_name} - Confusion Matrix"
-        )
+            st.markdown("#### Confusion Matrix")
 
-        st.pyplot(fig)
+            cm = confusion_matrix(
+                y_test,
+                y_pred
+            )
+
+            fig, ax = plt.subplots(figsize=(5, 4))
+
+            sns.heatmap(
+                cm,
+                annot=True,
+                fmt="d",
+                cmap="Greens",
+                xticklabels=["No", "Yes"],
+                yticklabels=["No", "Yes"],
+                ax=ax
+            )
+
+            ax.set_xlabel("Predicted")
+            ax.set_ylabel("Actual")
+            ax.set_title(selected_model_name)
+
+            st.pyplot(fig)
 
 
         # -------------------------------------------------
         # Classification Report
         # -------------------------------------------------
 
-        st.subheader("Classification Report")
+        with visual_col2:
 
-        report = classification_report(
-            y_test,
-            y_pred,
-            target_names=["No", "Yes"],
-            output_dict=True,
-            zero_division=0
-        )
+            st.markdown("#### Classification Report")
 
-        report_df = pd.DataFrame(report).transpose()
+            report = classification_report(
+                y_test,
+                y_pred,
+                target_names=["No", "Yes"],
+                output_dict=True,
+                zero_division=0
+            )
 
-        st.dataframe(
-            report_df.round(4),
-            use_container_width=True
-        )
+            report_df = pd.DataFrame(
+                report
+            ).transpose()
 
+            st.dataframe(
+                report_df.round(4),
+                use_container_width=True
+            )
 
         # -------------------------------------------------
         # Deployment Note
